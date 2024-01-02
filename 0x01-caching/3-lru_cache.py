@@ -27,7 +27,7 @@ class LRUCache(BaseCaching):
         if key not in self.cache_data:
             # Check if the cache is full, MAX_ITEMS reached
             if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                # Remove the last in/least recently cache key-value pair from the cache
+                # Remove the least recently cache key-value pair from the cache
                 removed_key, removed_value = self.cache_data.popitem(True)
                 print("DISCARD: {}".format(removed_key))
 
