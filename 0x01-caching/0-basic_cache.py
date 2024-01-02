@@ -24,7 +24,8 @@ class BasicCache(BaseCaching):
         """Get an item with a specified key"""
 
         # Check if key is None or doesn't exist in the cache
-        if key is None or key not in self.cache_data.keys():
+        if key is None:
             return None
 
-        return self.cache_data.get(key)
+        # Return the item or None if key doesn't exist
+        return self.cache_data.get(key, None)
