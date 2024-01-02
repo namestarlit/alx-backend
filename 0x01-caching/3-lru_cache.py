@@ -23,15 +23,19 @@ class LRUCache(BaseCaching):
         if key is None or item is None:
             return None
 
-        # Check if the cache is full, MAX_ITEMS reached
-        if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-            # Remove the last in/least recently cache key-value pair from the cache
-            removed_key, removed_value = self.cache_data.popitem(True)
-            print("DISCARD: {}".format(removed_key))
+        # Check if key is not in the cache
+        if key not in self.cache_data:
+            # Check if the cache is full, MAX_ITEMS reached
+            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+                # Remove the last in/least recently cache key-value pair from the cache
+                removed_key, removed_value = self.cache_data.popitem(True)
+                print("DISCARD: {}".format(removed_key))
 
-        # Add the new item to the cache
-        self.cache_data[key] = item
-        self.cache_data.move_to_end(key, last=False)
+            # Add the new item to the cache
+            self.cache_data[key] = item
+            self.cache_data.move_to_end(key, last=False)
+        else:
+            self.cache_data[key] = item
 
     def get(self, key):
         """Get an item from the cache"""
