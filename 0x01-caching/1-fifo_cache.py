@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """A module that implements a simple FIFO caching algorithm"""
-BaseCaching = __import__("base_caching").BaseCaching
+from collections import OrderedDict
+
+try:
+    BaseCaching = __import__("base_caching").BaseCaching
+except ImportError as e:
+    raise e(e.message)
 
 
 class FIFOCache(BaseCaching):
@@ -9,6 +14,7 @@ class FIFOCache(BaseCaching):
     def __init__(self):
         """Instantiates instances of FIFOCache class"""
         super().__init__()
+        self.cache_data = OrderedDict()
 
     def put(self, key, item):
         """Adds an item to the cache"""
@@ -19,22 +25,15 @@ class FIFOCache(BaseCaching):
 
         # Check if the cache is full, MAX_ITEMS reached
         if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-            # Get the key of the first added item from the cache
-            first_key = next(iter(self.cache_data))
-
             # Remove the first in cache key-value pair from the cache
-            self.cache_data.pop(first_key)
-            print("DISCARD: {}".format(first_key))
+            removed_key, removed_value = self.cache_data.popitem(False)
+            print("DISCARD: {}".format(removed_key))
 
         # Add the new item to the cache
         self.cache_data[key] = item
 
     def get(self, key):
         """Get an item from the cache"""
-
-        # Check if the key is None
-        if key is None:
-            return None
 
         # Return the value if key exists, else None
         return self.cache_data.get(key, None)
