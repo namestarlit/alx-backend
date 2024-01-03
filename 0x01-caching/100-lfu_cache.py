@@ -37,6 +37,9 @@ class LFUCache(BaseCaching):
             self.key_frequency.pop(key_to_remove, None)
 
             print("DISCARD: {}".format(key_to_remove))
+        else:
+            key_to_remove, _ = self.cache_data.popitem(True)
+            print("DISCARD: {}".format(key_to_remove))
 
     def put(self, key, item):
         """Adds an item to the cache"""
