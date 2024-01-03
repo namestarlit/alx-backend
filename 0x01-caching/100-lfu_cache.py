@@ -41,6 +41,10 @@ class LFUCache(BaseCaching):
     def put(self, key, item):
         """Adds an item to the cache"""
 
+        # Check if the key or item is not provided
+        if key is None or item is None:
+            return None
+
         if key in self.cache_data:
             # Update existing item
             self.cache_data[key] = item
@@ -58,7 +62,7 @@ class LFUCache(BaseCaching):
 
     def get(self, key):
         """Gets a cache with the specified key"""
-        if key in self.cache_data:
+        if key is not None and key in self.cache_data:
             # Increment frequency and move to the new frequency bucket
             self.key_frequency[key] += 1
             self.cache_data.move_to_end(key, last=False)
