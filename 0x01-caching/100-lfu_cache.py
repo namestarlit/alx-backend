@@ -38,6 +38,7 @@ class LFUCache(BaseCaching):
 
             print("DISCARD: {}".format(key_to_remove))
         else:
+            # Remove the least recently used cache
             key_to_remove, _ = self.cache_data.popitem(True)
             print("DISCARD: {}".format(key_to_remove))
 
