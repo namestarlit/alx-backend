@@ -8,11 +8,21 @@ from config import Config
 
 # Instantiate the flask object
 app = Flask(__name__)
-# Set configuration from Config class
-app.config.from_object(Config)
-
 # Instantiate babel object
 babel = Babel(app)
+
+
+# Set configuration from Config class
+class Config:
+    """A configuration class"""
+
+    LANGUAGES = ["en", "fr"]
+    BABEL_DEFAULT_LOCALE = "UTC"
+    BABEL_DEFAULT_TIMEZONE = "en"
+
+
+# Set the configuration from Config class
+app.config.from_object(Config)
 
 
 @app.route("/")
