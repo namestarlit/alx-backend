@@ -4,7 +4,6 @@ from flask import Flask
 from flask_babel import Babel
 from flask import render_template
 
-from config import Config
 
 # Instantiate the flask object
 app = Flask(__name__)
