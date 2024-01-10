@@ -31,13 +31,16 @@ users = {
 def get_user():
     """Gets user's credentials"""
     user_id = request.args.get("login_as")
-    return users.get(int(user_id), None)
+    if user_id:
+        return users.get(int(user_id), None)
+    return None
 
 
 @app.before_request
 def before_request():
     """set the user to global variable"""
-    g.user = get_user()
+    user = get_user()
+    g.user = user
 
 
 @babel.localeselector
