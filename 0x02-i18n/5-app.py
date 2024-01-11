@@ -47,13 +47,23 @@ def before_request() -> None:
 @babel.localeselector
 def get_locale() -> str:
     """Gets the best match locale"""
-    requested_locale = request.args.get("locale")
+    # Parse query string parameters
+    queries = request.query_string.decode("utf-8").split("&")
+    query_params = dict(
+        map(
+            lambda param: (
+                param if "=" in param else "{}=".format(param)
+            ).split("="),
+            queries,
+        )
+    )
+
+    requested_locale = query_params.get("locale", None)
     supported_lang = app.config["LANGUAGES"]
 
     if requested_locale in supported_lang:
         return requested_locale
-    else:
-        return request.accept_languages.best_match(supported_lang)
+    return app.config["BABEL_DEFAULT_LOCALE"]
 
 
 @app.route("/")
