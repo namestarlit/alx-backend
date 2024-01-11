@@ -4,6 +4,7 @@ from flask import Flask
 from flask import request, g
 from flask_babel import Babel
 from flask import render_template
+from typing import Union, Dict
 
 
 class Config:
@@ -28,7 +29,7 @@ users = {
 }
 
 
-def get_user():
+def get_user() -> Union[Dict, None]:
     """Gets user's credentials"""
     user_id = request.args.get("login_as")
     if user_id:
@@ -37,14 +38,14 @@ def get_user():
 
 
 @app.before_request
-def before_request():
+def before_request() -> None:
     """set the user to global variable"""
     user = get_user()
     g.user = user
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> str:
     """Gets the best match locale"""
     requested_locale = request.args.get("locale")
     supported_lang = app.config["LANGUAGES"]
