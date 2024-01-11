@@ -29,9 +29,26 @@ users = {
 }
 
 
+def parse_querystring():
+    """Parses query string parameters"""
+    # Parse query string parameters
+    queries = request.query_string.decode("utf-8").split("&")
+    query_params = dict(
+        map(
+            lambda param: (
+                param if "=" in param else "{}=".format(param)
+            ).split("="),
+            queries,
+        )
+    )
+
+    return query_params
+
+
 def get_user() -> Union[Dict, None]:
     """Gets user's credentials"""
-    user_id = request.args.get("login_as")
+    query_params = parse_querystring()
+    user_id = query_params.get("login_as")
     if user_id:
         return users.get(int(user_id), None)
     return None
@@ -47,17 +64,7 @@ def before_request() -> None:
 @babel.localeselector
 def get_locale() -> str:
     """Gets the best match locale"""
-    # Parse query string parameters
-    queries = request.query_string.decode("utf-8").split("&")
-    query_params = dict(
-        map(
-            lambda param: (
-                param if "=" in param else "{}=".format(param)
-            ).split("="),
-            queries,
-        )
-    )
-
+    query_params = parse_querystring()
     requested_locale = query_params.get("locale", None)
     supported_lang = app.config["LANGUAGES"]
 
