@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" >
+    <title>{{ _("home_title") }}</title>
+  </head>
+
+  <body>
+    <h1>{{ _("home_header") }}</h1>
+
+    {% if g.user %}
+      <a>{{ _("logged_in_as", username=g.user.get("name", "")) }}</a><br>
+    {% else %}
+      <a>{{ _("not_logged_in") }}</a><br>
+    {% endif %}
+    {% if g.time %}
+      <a>{{ _("current_time_is", current_time=g.time) }}</a><br>
+    {% endif %}
+
+  </body>
+
+</html>
