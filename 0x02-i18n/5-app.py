@@ -29,7 +29,7 @@ users = {
 }
 
 
-def parse_querystring():
+def parse_querystring() -> Union[Dict, None]:
     """Parses query string parameters"""
     # Parse query string parameters
     queries = request.query_string.decode("utf-8").split("&")
