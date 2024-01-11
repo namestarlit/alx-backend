@@ -30,35 +30,32 @@ users = {
 
 
 def get_user() -> Union[Dict, None]:
-    """Gets user's credentials"""
-    user_id = request.args.get("login_as")
-    if user_id:
-        return users.get(int(user_id), None)
+    """Retrieves a user based on a user id."""
+    login_id = request.args.get("login_as")
+    if login_id:
+        return users.get(int(login_id))
     return None
 
 
 @app.before_request
 def before_request() -> None:
-    """set the user to global variable"""
+    """Performs some routines before each request's resolution."""
     user = get_user()
     g.user = user
 
 
 @babel.localeselector
 def get_locale() -> str:
-    """Gets the best match locale"""
-    requested_locale = request.args.get("locale")
-    supported_lang = app.config["LANGUAGES"]
-
-    if requested_locale in supported_lang:
-        return requested_locale
-    else:
-        return request.accept_languages.best_match(supported_lang)
+    """Retrieves the locale for a web page."""
+    locale = request.args.get("locale", "")
+    if locale in app.config["LANGUAGES"]:
+        return locale
+    return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
 @app.route("/")
-def index() -> str:
-    """returns the index page"""
+def get_index() -> str:
+    """The home/index page."""
     return render_template("5-index.html")
 
 
